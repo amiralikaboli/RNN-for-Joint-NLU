@@ -56,8 +56,9 @@ def train(config):
             loss_1 = loss_function_1(tag_score,tag_target.view(-1))
             loss_2 = loss_function_2(intent_score,intent_target)
 
-            loss = loss_1+loss_2
-            losses.append(loss.data.cpu().numpy()[0] if USE_CUDA else loss.data.numpy()[0])
+            loss = loss_1 + loss_2
+            # losses.append(loss.data.cpu().numpy()[0] if USE_CUDA else loss.data.numpy()[0])
+            losses.append(loss.cpu().detach().numpy())
             loss.backward()
 
             torch.nn.utils.clip_grad_norm(encoder.parameters(), 5.0)
@@ -80,7 +81,7 @@ def train(config):
                 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--file_path', type=str, default='./data/atis-2.train.w-intent.iob' ,
+    parser.add_argument('--file_path', type=str, default='./data/atis/atis-2.train.w-intent.iob',
                         help='path of train data')
     parser.add_argument('--model_dir', type=str, default='./models/' ,
                         help='path for saving trained models')

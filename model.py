@@ -36,6 +36,7 @@ class Encoder(nn.Module):
         <PAD> 제외한 리얼 Context를 다시 만들어서 아웃풋으로
         """
         
+        input = input.cuda()
         self.hidden = self.init_hidden(input)
         
         embedded = self.embedding(input)
